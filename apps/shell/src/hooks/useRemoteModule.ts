@@ -1,16 +1,13 @@
 import React, { lazy, useEffect, useState } from 'react';
-import { loadRemote } from '@module-federation/runtime';
-
-interface UseRemoteModuleResult {
-  loading: boolean;
-  error: Error | null;
-  Component: React.ComponentType<any> | null;
-}
+import { loadRemote } from '@module-federation/enhanced/runtime';
 
 interface UseRemoteModuleProps {
   name: string;
   path?: string;
 }
+
+// Cache for loaded modules to prevent unnecessary refetching
+const moduleCache: Record<string, Promise<any>> = {};
 
 // fetched and returns component from module federation remote module
 const useRemoteModule = ({ name }: UseRemoteModuleProps) => {
@@ -21,17 +18,24 @@ const useRemoteModule = ({ name }: UseRemoteModuleProps) => {
   );
 
   useEffect(() => {
-    const loadModule = async () => {
+    const loadModule = async (Module: any) => {
       if (!name) {
         setLoading(false);
         setError(new Error(`Invalid remote module config: scope=${name}`));
         return;
       }
+
+      if (name in moduleCache) {
+        return moduleCache[name];
+      }
+
       try {
         setLoading(true);
         setError(null);
-        // @ts-expect-error expected error
-        const Module = lazy(() => loadRemote(`${name}/Module`));
+        if (!Module) {
+          // @ts-expect-error expected error
+          Module = lazy(() => loadRemote(`${name}/Module`));
+        }
 
         // if (Module) setComponent(Module.default);
         if (Module) setComponent(Module);
@@ -43,8 +47,15 @@ const useRemoteModule = ({ name }: UseRemoteModuleProps) => {
       }
     };
 
-    loadModule();
-  }, []);
+    let Module;
+
+    // Read from Cache if available
+    if (name in moduleCache) {
+      Module = moduleCache[name];
+    }
+
+    loadModule(Module);
+  }, [name]);
 
   return { Component, loading, error };
 };

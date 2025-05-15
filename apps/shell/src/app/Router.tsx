@@ -5,10 +5,10 @@ import { NotFound } from '../components';
 import RemoteComponent from './RemoteComponent';
 
 // const Profile = React.lazy(() => import('profile/Module'));
-const Products = React.lazy(() => import('products/Module'));
-const Cart = React.lazy(() => import('cart/Module'));
-const Checkout = React.lazy(() => import('checkout/Module'));
-const Orders = React.lazy(() => import('orders/Module'));
+// const Products = React.lazy(() => import('products/Module'));
+// const Cart = React.lazy(() => import('cart/Module'));
+// const Checkout = React.lazy(() => import('checkout/Module'));
+// const Orders = React.lazy(() => import('orders/Module'));
 
 const Router = () => {
   return (

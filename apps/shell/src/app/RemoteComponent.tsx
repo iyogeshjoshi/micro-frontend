@@ -2,29 +2,28 @@ import { lazy, Suspense } from 'react';
 import { Loading } from '../components';
 import useRemoteModule from '../hooks/useRemoteModule';
 import { MicroFrontendProps } from '../types/config';
-import { loadRemote } from '@module-federation/runtime';
+// import { loadRemote } from '@module-federation/runtime';
 
 const RemoteComponent = ({ scope, ...props }: MicroFrontendProps) => {
-  // const { loading, error, Component } = useRemoteModule({
-  //   name: scope,
-  // });
-  // const Component: React.ComponentType<any> = lazy(() =>
-  //   loadRemote<React.ComponentType<any>>(`${scope}/Module`)
-  // );
-  // @ts-expect-error working fine
-  const Component = lazy(() => loadRemote(`${scope}/Module`));
+  console.log('scope', scope);
+  const { loading, error, Component } = useRemoteModule({
+    name: scope,
+  });
 
-  console.log(typeof Component, JSON.stringify(Component, null, 2));
-  // if (loading) {
-  //   return <Loading />;
-  // }
+  // // @ts-expect-error working fine
+  // const Component = lazy(() => loadRemote(`${scope}/Module`));
 
-  if (!Component) {
+  console.log(typeof Component, Component);
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error || !Component) {
     return <div>No Remote component</div>;
   }
 
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <Component {...props} />
     </Suspense>
   );

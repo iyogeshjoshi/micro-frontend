@@ -8,12 +8,6 @@ import { AppStoreContext, initialState, reducer } from '../utils/Store';
 import { fetchAppConfig } from '../utils/Api';
 import { TopNav } from '../components';
 import { RegisterRemote } from '../utils/RegisterRemote';
-// import { init } from '@module-federation/enhanced/runtime';
-
-// init({
-//   name: 'shell',
-//   remotes: [],
-// });
 
 export function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -24,7 +18,8 @@ export function App() {
 
       try {
         const config = await fetchAppConfig();
-        // console.log(config);
+
+        // adds remote module to module federation remotes
         RegisterRemote(config);
 
         dispatch({ type: 'SET_CONFIG', payload: config });
