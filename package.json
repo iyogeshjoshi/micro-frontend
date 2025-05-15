@@ -2,7 +2,9 @@
   "name": "@myorg/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx run-many --target=serve --all"
+  },
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.14.5",
@@ -52,6 +54,7 @@
     "typescript-eslint": "^8.19.0"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-router-dom": "6.29.0"

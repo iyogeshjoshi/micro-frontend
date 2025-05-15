@@ -1,5 +1,5 @@
 import React, { lazy, useEffect, useState } from 'react';
-import { loadRemote } from '@module-federation/enhanced/runtime';
+import { loadRemote } from '@module-federation/runtime';
 
 interface UseRemoteModuleProps {
   name: string;

@@ -2,6 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../utils/Store';
 
 const TopNav = () => {
+  const routes: { [key: string]: string } = {
+    home: '/',
+    profile: '/profile',
+    cart: '/cart',
+    checkout: '/checkout',
+    orders: '/orders',
+    products: '/products',
+  };
   const { state, dispatch } = useAppStore();
   const navigate = useNavigate();
   const { config } = state;
@@ -21,7 +29,7 @@ const TopNav = () => {
         <div
           key={key}
           className="p-2 px-4 bg-blue-400 rounded-md text-lg text-white cursor-pointer"
-          onClick={() => handleNavSelect(key, module.path)}
+          onClick={() => handleNavSelect(key, routes[key] ?? '/products')}
         >
           {module.title}
         </div>

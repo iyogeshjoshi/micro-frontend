@@ -2,14 +2,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../utils/Store';
 
 const LeftNav = () => {
-  /* const leftMenuItems = [
-    { path: '/', name: 'Home' },
-    { path: '/profile', name: 'Profile' },
-    { path: '/products', name: 'Products' },
-    { path: '/cart', name: 'Cart' },
-    { path: '/checkout', name: 'Checkout' },
-    { path: '/orders', name: 'Orders' },
-  ]; */
+  const routes: { [key: string]: string } = {
+    home: '/',
+    profile: '/profile',
+    cart: '/cart',
+    checkout: '/checkout',
+    orders: '/orders',
+    products: '/products',
+  };
+
   const { state, dispatch } = useAppStore();
   const { config, currentModule } = state;
   const navigate = useNavigate();
@@ -34,21 +35,11 @@ const LeftNav = () => {
               className={`p-2 hover:bg-blue-300 hover:text-white text-xl font-medium rounded-md ${
                 key === currentModule && 'bg-blue-300 text-white'
               }`}
-              onClick={() => handleModuleSelect(key, module.path)}
+              onClick={() => handleModuleSelect(key, routes[key])}
             >
               {module.title}
             </li>
           ))}
-          {/* {leftMenuItems.map((item, index) => (
-            <li
-              key={index}
-              className={`p-2 hover:bg-blue-300 hover:text-white text-xl font-medium rounded-md ${
-                pathname === item.path && 'bg-blue-300 text-white'
-              }`}
-            >
-              <Link to={item.path}>{item.name}</Link>
-            </li>
-          ))} */}
         </ul>
       </nav>
     </aside>
