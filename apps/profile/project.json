@@ -1,0 +1,93 @@
+{
+  "name": "profile",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/profile/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/profile",
+        "index": "apps/profile/src/index.html",
+        "baseHref": "/",
+        "main": "apps/profile/src/main.ts",
+        "tsConfig": "apps/profile/tsconfig.app.json",
+        "assets": ["apps/profile/src/favicon.ico", "apps/profile/src/assets"],
+        "styles": ["apps/profile/src/styles.tailwind"],
+        "scripts": [],
+        "webpackConfig": "apps/profile/webpack.config.ts",
+        "postcssConfig": "apps/profile/postcss.config.js"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/profile/src/environments/environment.ts",
+              "with": "apps/profile/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/profile/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "profile:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "profile:build:development"
+        },
+        "production": {
+          "buildTarget": "profile:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "profile:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "profile:serve:development"
+        },
+        "production": {
+          "serveTarget": "profile:serve:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/profile/jest.config.ts"
+      }
+    }
+  }
+}
